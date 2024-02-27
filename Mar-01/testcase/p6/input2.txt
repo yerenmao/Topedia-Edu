@@ -1,0 +1,24 @@
+3
+buy 0
+buy -1
+buy 1
+buy 2
+buy 3
+buy 4
+buy 2
+buy 2
+buy 1
+buy 2
+buy 3
+buy 4
+buy 3
+buy 3
+buy 1
+buy 2
+buy 3
+buy 4
+quit
+buy 1
+buy 2
+buy 3
+buy 4
