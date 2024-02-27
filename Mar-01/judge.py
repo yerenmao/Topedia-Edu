@@ -21,6 +21,7 @@ def judge(ans_file: str, num: int):
         Color.print(f'Judge: number of I/O does not match', fg=Color.fg.lightred)
         return
 
+    failed_testcase = []
     # judge each pair of IO
     idx = 1
     for inputfile, outputfile in zip(inputfile_list, outputfile_list):
@@ -33,32 +34,49 @@ def judge(ans_file: str, num: int):
         # print testcase
         Color.print(f'* testcase {idx} - ', fg=Color.fg.yellow, end='', flush=True)
         # judging
+        judge_result = 'AC'
         try:
             result = subprocess.run([sys.executable, ans_file], input=input_data, text=True, capture_output=True, timeout=5)
             if result.returncode:
-                Color.print('Runtime Error (RE)', fg=Color.fg.red); idx += 1; continue
+                judge_result = 'RE'
+        except subprocess.TimeoutExpired:
+            judge_result = 'TLE'
+        except Exception as e:
+            Color.print('Error: ', e, fg=Color.fg.red);
+            failed_testcase.append(idx); idx += 1; continue
 
+        # diff
+        if judge_result == 'AC':
             user_output_data = result.stdout.strip()
             correct_output_data, user_output_data = correct_output_data.split('\n'), user_output_data.split('\n')
             if len(correct_output_data) != len(user_output_data):
-                Color.print('Wrong Answer (WA)', fg=Color.fg.red)
+                judge_result = 'WA'
             else:
-                is_AC, is_WA = True, False
                 for correct_line, user_line in zip(correct_output_data, user_output_data):
                     if correct_line != user_line:
-                        is_AC = False
                         if correct_line.strip() != user_line.strip():
-                            is_WA = True; break
-                if is_AC: Color.print('Accepted (AC)', fg=Color.fg.white)
-                elif is_WA: Color.print('Wrong Answer (WA)', fg=Color.fg.red)
-                else: Color.print('Presentation Error (PE)', fg=Color.fg.red)
+                            judge_result = 'WA'; break
+                        judge_result = 'PE'
 
-        except subprocess.TimeoutExpired:
-            Color.print('Time Limit Exceeded (TLE)', fg=Color.fg.red)
-        except Exception as e:
-            Color.print('Runtime Error (RE)', fg=Color.fg.red)
-            Color.print('Error: ', e, fg=Color.fg.red)
+        if judge_result == 'AC':
+            Color.print('Accepted (AC)', fg=Color.fg.green)
+        else:
+            failed_testcase.append(idx)
+            match judge_result:
+                case 'RE': Color.print('Runtime Error (RE)', fg=Color.fg.red)
+                case 'TLE': Color.print('Time Limit Exceeded (TLE)', fg=Color.fg.red)
+                case 'WA': Color.print('Wrong Answer (WA)', fg=Color.fg.red)
+                case 'PE': Color.print('Presentation Error (PE)', fg=Color.fg.red)
         idx += 1
+
+    # print result
+    if len(failed_testcase) == 0:
+        final_result = f'All {idx-1} testcase passed'
+    else:
+        final_result = f'testcase {str(failed_testcase).strip("[]")} failed'
+    print(f'+-{"-"*len(final_result)}-+')
+    print('| ', end=''); Color.print(final_result, fg=Color.fg.green if judge_result == 'AC' else Color.fg.red, end=''); print(' |')
+    print(f'+-{"-"*len(final_result)}-+')
 
 
 if __name__ == '__main__':
