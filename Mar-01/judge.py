@@ -75,7 +75,7 @@ def judge(ans_file: str, num: int):
     else:
         final_result = f'testcase {str(failed_testcase).strip("[]")} failed'
     print(f'+-{"-"*len(final_result)}-+')
-    print('| ', end=''); Color.print(final_result, fg=Color.fg.green if judge_result == 'AC' else Color.fg.red, end=''); print(' |')
+    print('| ', end=''); Color.print(final_result, fg=(Color.fg.green if len(failed_testcase) == 0 else Color.fg.red), end=''); print(' |')
     print(f'+-{"-"*len(final_result)}-+')
 
 
