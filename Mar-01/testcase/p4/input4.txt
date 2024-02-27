@@ -1,0 +1,7 @@
+6
+Lily,156,49
+Claire,169,53
+Tristan,178,75
+David,175,77
+Mike,188,92
+Emma,167,54
