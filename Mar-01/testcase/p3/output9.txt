@@ -1,2 +1,0 @@
-name: Booker
-grade: F

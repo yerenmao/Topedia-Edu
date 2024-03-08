@@ -1,2 +1,0 @@
-name: Lily
-grade: D

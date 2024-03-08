@@ -1,2 +1,0 @@
-name: Jane
-grade: B

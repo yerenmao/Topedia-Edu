@@ -1,5 +1,0 @@
-1
-buy 1
-buy 1
-buy 1
-quit

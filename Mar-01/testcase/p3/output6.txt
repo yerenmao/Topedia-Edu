@@ -1,2 +1,0 @@
-name: Jack
-grade: C

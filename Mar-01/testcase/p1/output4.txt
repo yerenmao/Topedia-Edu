@@ -1,2 +1,0 @@
-What is your name? How old are you? Hello Chris, you are 68 years old
-After 5 years, you are 73 years old
